@@ -266,16 +266,18 @@ a {
 
 .card-art {
   position: relative;
-  height: 150px;
+  height: 160px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .card-badge {
   position: absolute;
   top: 0.65rem;
   left: 0.65rem;
+  z-index: 2;
   background: rgba(255, 255, 255, 0.92);
   color: var(--ink);
   font-size: 0.68rem;
@@ -284,6 +286,7 @@ a {
   letter-spacing: 0.04em;
   padding: 0.22rem 0.55rem;
   border-radius: 999px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .card-emoji {
