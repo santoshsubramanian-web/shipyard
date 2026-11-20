@@ -743,3 +743,28 @@ a {
   color: var(--ink);
 }
 
+/* Status: loading and error states */
+.status {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.status button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.25rem;
+  background: var(--brand);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.status button:hover {
+  opacity: 0.9;
+}
+
+
