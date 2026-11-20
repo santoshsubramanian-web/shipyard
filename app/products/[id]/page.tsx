@@ -62,8 +62,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           <Image
             src={product.image}
             alt={product.name}
-            width={460}
-            height={345}
+            width={720}
+            height={540}
             className="detail-img"
             priority
           />
