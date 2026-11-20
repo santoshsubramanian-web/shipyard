@@ -1,13 +1,39 @@
 // app/products/[id]/page.tsx
+import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import dynamic from "next/dynamic";
 import ProductCard from "../../components/ProductCard";
 import Stars from "../../components/Stars";
 import { getProduct, products, relatedProducts } from "../../data/products";
 
+// Lazy-load the heavy Reviews section on demand
+const Reviews = dynamic(() => import("./Reviews"), {
+  loading: () => (
+    <div className="reviews-loading">
+      <p>Loading reviews…</p>
+    </div>
+  ),
+});
+
 // Pre-build one static page per product at build time.
 export function generateStaticParams() {
   return products.map((product) => ({ id: product.id }));
+}
+
+// Dynamic per-page metadata based on the current product route
+export function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Metadata {
+  const product = getProduct(params.id);
+  if (!product) return { title: "Product not found | ShipYard" };
+  return {
+    title: `${product.name} | ShipYard`,
+    description: product.tagline,
+  };
 }
 
 export default function ProductPage({ params }: { params: { id: string } }) {
@@ -31,16 +57,16 @@ export default function ProductPage({ params }: { params: { id: string } }) {
       </nav>
 
       <article className="detail">
-        <div
-          className="detail-art"
-          style={{
-            background: product.accent2
-              ? `linear-gradient(135deg, ${product.accent}, ${product.accent2})`
-              : product.accent,
-          }}
-        >
+        <div className="detail-art">
           {product.badge && <span className="card-badge">{product.badge}</span>}
-          <span className="detail-emoji">{product.emoji}</span>
+          <Image
+            src={product.image}
+            alt={product.name}
+            width={460}
+            height={345}
+            className="detail-img"
+            priority
+          />
         </div>
 
         <div className="detail-body">
@@ -59,6 +85,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           </ul>
         </div>
       </article>
+
+      {/* Lazy-loaded customer reviews section */}
+      <Reviews productId={product.id} />
 
       {related.length > 0 && (
         <section className="related">
